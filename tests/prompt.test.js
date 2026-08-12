@@ -1,6 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert");
 const { buildSystemPrompt, buildUserMessage, ENVELOPE_SCHEMA } = require("../llm/prompt.js");
+const { WIDGET_TYPES } = require("../common/envelope.js");
 
 const aesthetic = { id: "terminal", name: "Terminal", spec: "green phosphor CRT everywhere", baseCss: "" };
 
@@ -30,4 +31,11 @@ test("envelope schema constrains widget types", () => {
   const types = ENVELOPE_SCHEMA.properties.widgets.items.properties.type.enum;
   assert.deepEqual(types.sort(), ["badge", "hit_counter", "marquee", "sparkle_cursor", "tiled_background"]);
   assert.deepEqual(ENVELOPE_SCHEMA.required, ["css", "widgets"]);
+});
+
+test("envelope schema widget enum stays in sync with the validator catalog", () => {
+  assert.deepEqual(
+    ENVELOPE_SCHEMA.properties.widgets.items.properties.type.enum,
+    WIDGET_TYPES
+  );
 });

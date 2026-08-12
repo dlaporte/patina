@@ -4,7 +4,7 @@
   root.Patina = root.Patina || {};
   root.Patina.envelope = mod;
 })(globalThis, function () {
-  const WIDGET_TYPES = ["marquee", "sparkle_cursor", "tiled_background", "hit_counter", "badge"];
+  const WIDGET_TYPES = ["badge", "hit_counter", "marquee", "sparkle_cursor", "tiled_background"];
 
   function validateEnvelope(obj) {
     if (!obj || typeof obj !== "object") return { ok: false, errors: ["envelope must be an object"] };
