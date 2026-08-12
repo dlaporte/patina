@@ -28,6 +28,7 @@ test("sends a correctly-shaped request and parses the envelope", async () => {
   assert.equal(captured.headers["anthropic-version"], "2023-06-01");
   assert.equal(captured.headers["anthropic-dangerous-direct-browser-access"], "true");
   assert.equal(captured.body.model, "claude-opus-5");
+  assert.equal(captured.body.max_tokens, 16000);
   assert.equal(captured.body.system[0].text, "SYS");
   assert.deepEqual(captured.body.system[0].cache_control, { type: "ephemeral" });
   assert.equal(captured.body.messages[0].content, "USR");
@@ -47,5 +48,13 @@ test("throws with status and body excerpt on non-2xx", async () => {
   await assert.rejects(
     generateTheme({ apiKey: "k", model: "m", system: "s", user: "u", schema: {} }, fakeFetch),
     /401.*bad key/
+  );
+});
+
+test("throws a clear error on max_tokens truncation", async () => {
+  const fakeFetch = async () => ({ ok: true, json: async () => ({ stop_reason: "max_tokens", content: [{ type: "text", text: '{"css":' }] }) });
+  await assert.rejects(
+    generateTheme({ apiKey: "k", model: "m", system: "s", user: "u", schema: {} }, fakeFetch),
+    /truncated/
   );
 });

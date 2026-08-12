@@ -19,7 +19,7 @@
       },
       body: JSON.stringify({
         model: model || "claude-opus-5",
-        max_tokens: 8192,
+        max_tokens: 16000,
         system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
         messages: [{ role: "user", content: user }],
         output_config: { format: { type: "json_schema", schema } }
@@ -31,6 +31,7 @@
     }
     const data = await res.json();
     if (data.stop_reason === "refusal") throw new Error("Model declined the request (refusal)");
+    if (data.stop_reason === "max_tokens") throw new Error("Theme generation truncated (max_tokens) — try again or use a smaller aesthetic spec");
     const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("");
     return JSON.parse(text);
   }
