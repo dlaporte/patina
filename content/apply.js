@@ -42,6 +42,20 @@
   function clearPatina(doc) {
     const win = doc.defaultView;
     if (win && win.__patinaObserver) { win.__patinaObserver.disconnect(); win.__patinaObserver = null; }
+    if (win && win.__patinaSparkles) {
+      doc.removeEventListener("mousemove", win.__patinaSparkleHandler);
+      win.__patinaSparkles = false;
+      win.__patinaSparkleHandler = null;
+    }
+    for (const inner of [...doc.querySelectorAll("[data-patina='marquee-inner']")]) {
+      const target = inner.parentNode;
+      if (target) {
+        while (inner.firstChild) target.insertBefore(inner.firstChild, inner);
+        target.style.removeProperty("overflow");
+        target.style.removeProperty("white-space");
+      }
+      inner.remove();
+    }
     for (const el of [...doc.querySelectorAll("[data-patina]")]) el.remove();
   }
 

@@ -33,10 +33,11 @@
     },
 
     sparkle_cursor({ doc }) {
-      if (doc.defaultView.__patinaSparkles) return;
-      doc.defaultView.__patinaSparkles = true;
+      const win = doc.defaultView;
+      if (win.__patinaSparkles) return;
+      win.__patinaSparkles = true;
       let last = 0;
-      doc.addEventListener("mousemove", (e) => {
+      win.__patinaSparkleHandler = (e) => {
         const now = Date.now();
         if (now - last < 60) return; // throttle
         last = now;
@@ -48,7 +49,8 @@
           font-size: 12px; animation: patina-sparkle 0.8s ease-out forwards;`;
         doc.body.appendChild(s);
         setTimeout(() => s.remove(), 850);
-      }, { passive: true });
+      };
+      doc.addEventListener("mousemove", win.__patinaSparkleHandler, { passive: true });
     },
 
     tiled_background({ doc, widget }) {
@@ -90,7 +92,9 @@
     for (const w of widgets || []) {
       try {
         const fn = registry[w.type];
-        if (fn) fn({ doc, widget: w });
+        if (fn) Promise.resolve(fn({ doc, widget: w })).catch((e) => {
+          console.warn("[patina] widget failed:", w.type, e);
+        });
       } catch (e) {
         console.warn("[patina] widget failed:", w.type, e);
       }
