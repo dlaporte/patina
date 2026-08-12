@@ -125,6 +125,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       } else if (msg.type === "patina:injectHere") {
         await chrome.scripting.executeScript({ target: { tabId: msg.tabId }, files: CONTENT_SCRIPTS });
         sendResponse({ ok: true });
+
+      } else {
+        sendResponse({ ok: false, error: "unknown message type: " + msg.type });
       }
     } catch (e) {
       sendResponse({ ok: false, error: e.message });
