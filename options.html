@@ -1,1 +1,60 @@
-<!doctype html><html><body>Patina options (under construction)</body></html>
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Patina Options</title><link rel="stylesheet" href="options.css"></head>
+<body>
+  <h1>Patina Options</h1>
+
+  <section>
+    <h2>Coverage</h2>
+    <label><input type="checkbox" id="enabled"> Patina enabled (global)</label>
+    <label><input type="checkbox" id="everywhere"> Enable everywhere (grants access to all sites)</label>
+    <p class="hint">Without "everywhere", use the popup's "Patinate this page" button per site.</p>
+  </section>
+
+  <section>
+    <h2>LLM Provider</h2>
+    <label>Provider
+      <select id="providerType">
+        <option value="anthropic">Anthropic</option>
+        <option value="openai">OpenAI-compatible</option>
+      </select>
+    </label>
+    <label id="baseUrlField" hidden>Base URL <input type="text" id="baseUrl" placeholder="https://api.openai.com/v1"></label>
+    <label>Model <input type="text" id="model" placeholder="claude-opus-5"></label>
+    <p class="hint" id="modelHint">Anthropic: claude-opus-5 (best) or claude-haiku-4-5 (fast/cheap).</p>
+    <label>API key <input type="password" id="apiKey"></label>
+    <button id="saveProvider">Save provider</button>
+    <span id="providerSaved" class="saved" hidden>Saved ✓</span>
+  </section>
+
+  <section>
+    <h2>Custom aesthetics</h2>
+    <label>Name <input type="text" id="customName" placeholder="Cottagecore"></label>
+    <label>Describe it <textarea id="customSpec" rows="4"
+      placeholder="Soft floral palette, hand-drawn borders, serif type, pressed-flower dividers..."></textarea></label>
+    <button id="addCustom">Add aesthetic</button>
+    <ul id="customList"></ul>
+  </section>
+
+  <section>
+    <h2>Denylist</h2>
+    <p class="hint">One pattern per line. "*.gov" matches a suffix; "chase.com" matches the domain and subdomains.</p>
+    <textarea id="denylist" rows="8"></textarea>
+    <button id="saveDenylist">Save denylist</button>
+    <span id="denylistSaved" class="saved" hidden>Saved ✓</span>
+  </section>
+
+  <section>
+    <h2>Cached themes</h2>
+    <table id="cacheTable">
+      <thead><tr><th>Site</th><th>Aesthetic</th><th>Size</th><th>Generated</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <script src="common/settings.js"></script>
+  <script src="common/cache.js"></script>
+  <script src="common/presets.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
