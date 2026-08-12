@@ -70,3 +70,8 @@ test("compound properties like padding-top do not count as zero offsets", () => 
   assert.equal(r.removed.length, 0);
   assert.ok(r.css.includes("width: 20px"));
 });
+
+test("drops fixed overlays with zero offsets in any css unit", () => {
+  const r = sanitizeCss(".o { position: fixed; top: 0em; right: 0rem; bottom: 0vh; left: 0vw; background: red; }");
+  assert.equal(r.removed.length, 1);
+});

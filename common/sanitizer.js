@@ -25,7 +25,7 @@
     css = css.replace(/([^{}]+)\{([^{}]*)\}/g, (rule, sel, body) => {
       const fixed = /position\s*:\s*fixed/i.test(body);
       const zeroOffsets = ["top", "right", "bottom", "left"].filter((side) =>
-        new RegExp("(?<![\\w-])" + side + "\\s*:\\s*0(px|%)?\\s*(;|$)", "i").test(body)
+        new RegExp("(?<![\\w-])" + side + "\\s*:\\s*0(px|%|em|rem|vh|vw|vmin|vmax|pt|pc|cm|mm|in|ex|ch)?\\s*(;|$)", "i").test(body)
       ).length;
       const covers = /(100vw|100vh|inset\s*:\s*0)/i.test(body) ||
         (/width\s*:\s*100%/i.test(body) && /height\s*:\s*100%/i.test(body)) ||
