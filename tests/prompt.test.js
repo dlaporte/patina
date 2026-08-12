@@ -29,7 +29,7 @@ test("previousNotes adds the variation instruction", () => {
 
 test("envelope schema constrains widget types", () => {
   const types = ENVELOPE_SCHEMA.properties.widgets.items.properties.type.enum;
-  assert.deepEqual(types.sort(), ["badge", "hit_counter", "marquee", "sparkle_cursor", "tiled_background"]);
+  assert.deepEqual([...types].sort(), ["badge", "hit_counter", "marquee", "sparkle_cursor", "tiled_background"]);
   assert.deepEqual(ENVELOPE_SCHEMA.required, ["css", "widgets"]);
 });
 

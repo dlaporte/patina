@@ -12,7 +12,7 @@ test("accepts a valid envelope", () => {
 });
 
 test("widget catalog is the closed five", () => {
-  assert.deepEqual(WIDGET_TYPES.sort(), ["badge", "hit_counter", "marquee", "sparkle_cursor", "tiled_background"]);
+  assert.deepEqual([...WIDGET_TYPES].sort(), ["badge", "hit_counter", "marquee", "sparkle_cursor", "tiled_background"]);
 });
 
 test("rejects missing/empty css", () => {
