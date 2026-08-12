@@ -52,3 +52,12 @@ test("rejects css over the 50KB cap", () => {
   assert.equal(r.ok, false);
   assert.match(r.reason, /50KB/);
 });
+
+test("drops fixed overlays declared with longhand zero offsets", () => {
+  const r = sanitizeCss(
+    ".o { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: #000; } " +
+    "nav { position: fixed; top: 0; left: 0; height: 40px; }"
+  );
+  assert.ok(!r.css.includes("bottom: 0"));
+  assert.ok(r.css.includes("height: 40px")); // 2 zero offsets ≠ full viewport
+});
