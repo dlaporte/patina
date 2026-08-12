@@ -61,3 +61,17 @@ test("saveSettings round-trips a patch", async () => {
   const s = await S.getSettings();
   assert.equal(s.aestheticId, "soviet");
 });
+
+test("saveSettings deep-merges provider and siteOverrides patches", async () => {
+  await S.saveSettings({ provider: { type: "anthropic", baseUrl: "", model: "claude-opus-5", apiKey: "sk-1" } });
+  await S.saveSettings({ provider: { apiKey: "sk-2" } });
+  let s = await S.getSettings();
+  assert.equal(s.provider.apiKey, "sk-2");
+  assert.equal(s.provider.model, "claude-opus-5");
+
+  await S.saveSettings({ siteOverrides: { "a.com": "off" } });
+  await S.saveSettings({ siteOverrides: { "b.com": "off" } });
+  s = await S.getSettings();
+  assert.equal(s.siteOverrides["a.com"], "off");
+  assert.equal(s.siteOverrides["b.com"], "off");
+});

@@ -51,7 +51,10 @@
   }
 
   async function saveSettings(patch) {
-    const next = Object.assign({}, await getSettings(), patch);
+    const current = await getSettings();
+    const next = Object.assign({}, current, patch);
+    if (patch && patch.provider) next.provider = Object.assign({}, current.provider, patch.provider);
+    if (patch && patch.siteOverrides) next.siteOverrides = Object.assign({}, current.siteOverrides, patch.siteOverrides);
     await chrome.storage.local.set({ settings: next });
     return next;
   }
