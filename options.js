@@ -38,9 +38,16 @@ async function render() {
   for (const t of await P.cache.listThemes()) {
     const tr = document.createElement("tr");
     const aesthetic = P.presets.getAesthetic(t.aestheticId, settings);
-    tr.innerHTML = `<td>${t.domain}</td><td>${aesthetic ? aesthetic.name : t.aestheticId}</td>` +
-      `<td>${Math.round((t.record.meta.size || 0) / 1024)}KB</td>` +
-      `<td>${new Date(t.record.meta.createdAt).toLocaleDateString()}</td>`;
+    for (const text of [
+      t.domain,
+      aesthetic ? aesthetic.name : t.aestheticId,
+      `${Math.round((t.record.meta.size || 0) / 1024)}KB`,
+      new Date(t.record.meta.createdAt).toLocaleDateString()
+    ]) {
+      const cell = document.createElement("td");
+      cell.textContent = text;
+      tr.appendChild(cell);
+    }
     const td = document.createElement("td");
     const del = document.createElement("button");
     del.textContent = "Delete";
