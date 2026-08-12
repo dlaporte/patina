@@ -95,7 +95,7 @@ Each preset = an aesthetic spec (prompt section) + bundled base theme CSS + asse
 | **8-bit** | NES-era: pixel fonts, chunky pixelated borders and dithering, limited primary palette, sprite-style icons, pixel cursor. |
 | **Information Superhighway** | The flagship early-web preset: tiled starfields, Comic Sans/Times, marquees, hit counters, "under construction" tape, beveled buttons, web-ring badges, "best viewed in Netscape". |
 | **Psychedelic** | 60s–70s psychedelia: tie-dye/lava-lamp gradients, acid palette, groovy bubble type, wavy dividers, kaleidoscope patterns. |
-| **Enterprise** | Corporate beige: Windows-95/intranet chrome, gray bevels, Tahoma/MS Sans Serif, blue title bars, dense forms, clip-art synergy. *(Alternate reading — LCARS/Star Trek — flagged to owner for confirmation.)* |
+| **Enterprise** | LCARS (Star Trek: TNG bridge computer, Okuda-style): black backgrounds; salmon/lavender/pale-blue/gold panel palette; rounded pill buttons and "elbow" swept-corner frames; thin bars with rounded end caps; ultra-condensed all-caps type, right-aligned labels with number codes; blinking status readouts and a stardate widget. |
 | **Soviet** | Constructivist propaganda: red/black/cream, bold condensed type, star motifs, poster diagonals, brutalist blocks. |
 | **Murica** | Maximal Americana: stars-and-stripes everywhere, eagles, red/white/blue gradients, denim texture, slab type, fireworks. |
 
