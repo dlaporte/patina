@@ -1,1 +1,22 @@
-<!doctype html><html><body>Patina (under construction)</body></html>
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><link rel="stylesheet" href="popup.css"></head>
+<body>
+  <h1>Patina</h1>
+  <div id="site" class="site"></div>
+  <div id="status" class="status"></div>
+  <label class="field">Aesthetic
+    <select id="aesthetic"></select>
+  </label>
+  <div class="row">
+    <button id="patinate" hidden>Patinate this page</button>
+    <button id="repatinate">&#9851; Re-patinate</button>
+    <button id="toggleSite"></button>
+  </div>
+  <div id="error" class="error" hidden></div>
+  <a href="#" id="openOptions">Options</a>
+  <script src="common/settings.js"></script>
+  <script src="common/presets.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
