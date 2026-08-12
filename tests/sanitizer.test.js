@@ -61,3 +61,12 @@ test("drops fixed overlays declared with longhand zero offsets", () => {
   assert.ok(!r.css.includes("bottom: 0"));
   assert.ok(r.css.includes("height: 40px")); // 2 zero offsets ≠ full viewport
 });
+
+test("compound properties like padding-top do not count as zero offsets", () => {
+  const r = sanitizeCss(
+    ".safe { position: fixed; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; " +
+    "top: 10px; left: 10px; width: 20px; height: 20px; }"
+  );
+  assert.equal(r.removed.length, 0);
+  assert.ok(r.css.includes("width: 20px"));
+});
