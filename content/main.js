@@ -49,7 +49,7 @@
       const digest = P.digest.capDigest(P.digest.buildDigest(document, window));
       const res = await chrome.runtime.sendMessage({
         type: "patina:generate", domain: host, aestheticId: aesthetic.id, digest
-      }).catch(() => null);
+      }).catch((e) => { console.warn("[patina] generate request failed:", e && e.message); return null; });
       if (res && res.ok) applyEnvelope(res.envelope);
       else if (res && res.error) console.warn("[patina]", res.error);
     });
