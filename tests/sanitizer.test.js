@@ -75,3 +75,20 @@ test("drops fixed overlays with zero offsets in any css unit", () => {
   const r = sanitizeCss(".o { position: fixed; top: 0em; right: 0rem; bottom: 0vh; left: 0vw; background: red; }");
   assert.equal(r.removed.length, 1);
 });
+
+test("strips image-set() with external URLs, keeps data: image-set", () => {
+  const r = sanitizeCss(
+    '.a { background-image: image-set("https://evil.example/a.png" 1x); }\n' +
+    '.b { background-image: -webkit-image-set("https://evil.example/b.png" 1x); }\n' +
+    '.c { background-image: image-set("data:image/png;base64,abc" 1x); color: teal; }'
+  );
+  assert.ok(!r.css.includes("evil.example"));
+  assert.ok(r.css.includes("data:image/png"));
+  assert.ok(r.css.includes("color: teal"));
+});
+
+test("drops fixed overlays using logical inset properties", () => {
+  const r = sanitizeCss(".o { position: fixed; inset-block: 0; inset-inline: 0; background: #000; } p { color: navy; }");
+  assert.ok(!r.css.includes("inset-block"));
+  assert.ok(r.css.includes("color: navy"));
+});
