@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Patina",
+  "version": "0.1.0",
+  "description": "Restyles the web to match your aesthetic. Pick a patina; every site gets the finish.",
+  "permissions": ["storage", "scripting", "activeTab", "tabs"],
+  "optional_host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_popup": "popup.html", "default_title": "Patina" },
+  "options_page": "options.html",
+  "web_accessible_resources": [
+    { "resources": ["assets/*"], "matches": ["<all_urls>"] }
+  ]
+}
