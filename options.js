@@ -64,6 +64,7 @@ async function render() {
 
   $("enabled").checked = settings.enabled;
   $("everywhere").checked = await chrome.permissions.contains({ origins: ["<all_urls>"] });
+  $("interstitial").checked = settings.interstitial;
 
   const presetId = inferPreset(settings.provider);
   $("providerType").value = presetId;
@@ -134,6 +135,8 @@ async function render() {
 }
 
 $("enabled").addEventListener("change", async (e) => { await P.settings.saveSettings({ enabled: e.target.checked }); });
+
+$("interstitial").addEventListener("change", async (e) => { await P.settings.saveSettings({ interstitial: e.target.checked }); });
 
 $("everywhere").addEventListener("change", async (e) => {
   if (e.target.checked) {

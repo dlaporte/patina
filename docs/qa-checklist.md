@@ -9,7 +9,9 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 - https://www.youtube.com — SPA navigation
 
 ## First-visit flow
-- [ ] New domain: base theme appears immediately (no flash of the original site)
+- [ ] New domain: "Patinating…" curtain appears immediately, styled to the current patina
+- [ ] "Show the page now" lifts the curtain early; it also self-lifts after ~15s if generation is slow
+- [ ] With the curtain disabled in Options: base theme appears immediately (no flash of the original site)
 - [ ] Generated theme + widgets apply within ~30s without reload
 - [ ] Service-worker console shows no errors
 

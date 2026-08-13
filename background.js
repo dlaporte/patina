@@ -8,7 +8,7 @@ const P = globalThis.Patina;
 
 const CONTENT_SCRIPTS = [
   "common/settings.js", "common/cache.js", "common/presets.js",
-  "content/digest.js", "content/apply.js", "content/widgets.js", "content/main.js"
+  "content/digest.js", "content/apply.js", "content/widgets.js", "content/curtain.js", "content/main.js"
 ];
 
 const inFlight = new Map(); // themeKey -> Promise<envelope>

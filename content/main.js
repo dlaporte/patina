@@ -45,13 +45,23 @@
 
     if (aesthetic.baseCss) P.apply.applyCss(document, aesthetic.baseCss);
 
+    // First visit: cover the page with the patina's interstitial while the theme
+    // generates. The curtain self-lifts on timeout and is skippable; we lift it
+    // here on completion or failure so the reveal is always fully themed.
+    const useCurtain = settings.interstitial && !!settings.provider.apiKey;
+    if (useCurtain) P.curtain.show(document, aesthetic);
+
     onReady(async () => {
-      const digest = P.digest.capDigest(P.digest.buildDigest(document, window));
-      const res = await chrome.runtime.sendMessage({
-        type: "patina:generate", domain: host, aestheticId: aesthetic.id, digest
-      }).catch((e) => { console.warn("[patina] generate request failed:", e && e.message); return null; });
-      if (res && res.ok) applyEnvelope(res.envelope);
-      else if (res && res.error) console.warn("[patina]", res.error);
+      try {
+        const digest = P.digest.capDigest(P.digest.buildDigest(document, window));
+        const res = await chrome.runtime.sendMessage({
+          type: "patina:generate", domain: host, aestheticId: aesthetic.id, digest
+        }).catch((e) => { console.warn("[patina] generate request failed:", e && e.message); return null; });
+        if (res && res.ok) applyEnvelope(res.envelope);
+        else if (res && res.error) console.warn("[patina]", res.error);
+      } finally {
+        if (useCurtain) P.curtain.hide(document);
+      }
     });
   })();
 })();

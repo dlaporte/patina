@@ -12,6 +12,7 @@ Patina uses an LLM (your key, your choice of provider) to generate a site-specif
 - **Custom patinas** — describe any aesthetic in a sentence or two ("cottagecore", "Windows 95", "brutalist concrete") and Patina improvises it; edit or delete your creations in Options
 - **Permanent per-site theme cache** — each site is themed once per patina; reloads and revisits apply instantly with zero LLM calls
 - **Re-patinate** — one click regenerates a site's theme in a noticeably different direction
+- **"Patinating…" curtain** — a per-patina loading interstitial covers a site's first visit until its theme is ready (skippable, 15-second cap, can be turned off in Options)
 - **Retro widget runtime** — marquee headlines, sparkle cursor trails, tiled backgrounds, odometer hit counters, and badges, all shipped in the extension and placed by the LLM
 - **Bring your own provider** — Anthropic, OpenAI, OpenRouter, Ollama (local), or any OpenAI-compatible endpoint
 - **Per-site and global controls** — disable Patina on any site from the popup, or everywhere with one toggle
@@ -43,7 +44,7 @@ This extension is not published to the Chrome Web Store. To install it manually:
 
 1. **Add a key.** Open Patina's Options (toolbar icon → Options). Pick a provider, paste your API key, and choose a model. A fast, cheap model (`gpt-5.6-luna`, `claude-haiku-4-5`) is usually all Patina needs — each site is themed once and cached forever.
 2. **Turn it on.** In Options, toggle **Enable everywhere** and accept Chrome's permission prompt. (Prefer per-site control? Skip the toggle and use **Patinate this page** in the popup instead.)
-3. **Browse.** New sites show the patina's instant base theme, then upgrade to their custom LLM-generated theme within a few seconds. Everything after that is served from cache.
+3. **Browse.** A new site shows a themed "Patinating…" curtain until its custom theme is ready (or, with the curtain off, the patina's instant base theme that upgrades in place). Everything after that is served from cache.
 4. **Steer it.** From the popup: switch patinas, **♻️ Re-patinate** a site you're not happy with, or disable Patina for that site. In Options: create and edit custom patinas, manage the denylist, and view or delete cached themes.
 
 Without an API key, the built-in patinas still apply their base themes — the LLM layer just stays off until you add one.

@@ -75,3 +75,7 @@ test("saveSettings deep-merges provider and siteOverrides patches", async () => 
   assert.equal(s.siteOverrides["a.com"], "off");
   assert.equal(s.siteOverrides["b.com"], "off");
 });
+
+test("patinating curtain defaults on", () => {
+  assert.equal(S.DEFAULTS.interstitial, true);
+});

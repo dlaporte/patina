@@ -14,6 +14,7 @@
   const DEFAULTS = {
     enabled: true,
     aestheticId: "superhighway",
+    interstitial: true,
     provider: { type: "anthropic", baseUrl: "", model: "claude-opus-5", apiKey: "" },
     denylist: DEFAULT_DENYLIST,
     siteOverrides: {},
