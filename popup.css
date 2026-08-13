@@ -181,3 +181,28 @@ footer {
   border-top: 1px solid var(--parchment-deep);
 }
 .version { font-size: 10px; color: var(--ink-soft); letter-spacing: 0.08em; }
+
+/* ---- Power switch (global on/off) in the nameplate ---- */
+.power { margin-left: auto; display: inline-flex; cursor: pointer; }
+.power input { position: absolute; opacity: 0; width: 0; height: 0; }
+.power-track {
+  width: 34px; height: 18px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--copper-rim);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 2px;
+  transition: background 140ms;
+}
+.power-thumb {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--parchment);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  transition: transform 140ms, background 140ms;
+}
+.power input:checked + .power-track { background: var(--verdigris-deep); }
+.power input:checked + .power-track .power-thumb { transform: translateX(16px); background: var(--verdigris-pale); }
+.power input:focus-visible + .power-track { outline: 2px solid var(--verdigris-pale); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .power-track, .power-thumb { transition: none; } }

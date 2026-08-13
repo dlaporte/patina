@@ -11,6 +11,7 @@ async function init() {
   $("site").textContent = host || "(unsupported page)";
 
   const settings = await P.settings.getSettings();
+  $("enabled").checked = settings.enabled;
   const select = $("aesthetic");
   select.innerHTML = "";
   for (const a of [...P.presets.PRESETS, ...settings.customAesthetics]) {
@@ -80,6 +81,12 @@ $("toggleSite").addEventListener("click", async () => {
 $("patinate").addEventListener("click", async () => {
   await chrome.runtime.sendMessage({ type: "patina:injectHere", tabId: tab.id });
   window.close();
+});
+
+$("enabled").addEventListener("change", async (e) => {
+  await P.settings.saveSettings({ enabled: e.target.checked });
+  if (tab && host) { chrome.tabs.reload(tab.id); window.close(); }
+  else init(); // no themable tab: just refresh the popup's state
 });
 
 $("openOptions").addEventListener("click", () => chrome.runtime.openOptionsPage());

@@ -26,7 +26,7 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 
 ## Controls
 - [ ] Per-site disable → reload un-themed; re-enable restores cached theme
-- [ ] Global toggle off → nothing themes anywhere
+- [ ] Power switch in the popup nameplate off → nothing themes anywhere
 - [ ] Denylist: add a test domain → un-themed + popup says denylisted; *.gov never themes
 - [ ] No API key: base themes still apply; popup says "No API key — open Options"
 

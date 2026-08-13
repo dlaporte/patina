@@ -62,7 +62,6 @@ function applyPresetUI(presetId, storedBaseUrl) {
 async function render() {
   const settings = await P.settings.getSettings();
 
-  $("enabled").checked = settings.enabled;
   $("everywhere").checked = await chrome.permissions.contains({ origins: ["<all_urls>"] });
   $("interstitial").checked = settings.interstitial;
 
@@ -134,7 +133,6 @@ async function render() {
   }
 }
 
-$("enabled").addEventListener("change", async (e) => { await P.settings.saveSettings({ enabled: e.target.checked }); });
 
 $("interstitial").addEventListener("change", async (e) => { await P.settings.saveSettings({ interstitial: e.target.checked }); });
 

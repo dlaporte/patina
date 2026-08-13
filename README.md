@@ -45,7 +45,7 @@ This extension is not published to the Chrome Web Store. To install it manually:
 1. **Add a key.** Open Patina's Options (toolbar icon → Options). Pick a provider, paste your API key, and choose a model. A fast, cheap model (`gpt-5.6-luna`, `claude-haiku-4-5`) is usually all Patina needs — each site is themed once and cached forever.
 2. **Turn it on.** In Options, toggle **Enable everywhere** and accept Chrome's permission prompt. (Prefer per-site control? Skip the toggle and use **Patinate this page** in the popup instead.)
 3. **Browse.** A new site shows a themed "Patinating…" curtain until its custom theme is ready (or, with the curtain off, the patina's instant base theme that upgrades in place). Everything after that is served from cache.
-4. **Steer it.** From the popup: switch patinas, **♻️ Re-patinate** a site you're not happy with, or disable Patina for that site. In Options: create and edit custom patinas, manage the denylist, and view or delete cached themes.
+4. **Steer it.** From the popup: the power switch turns Patina off everywhere, and you can switch patinas, **♻️ Re-patinate** a site you're not happy with, or disable Patina for that site. In Options: create and edit custom patinas, manage the denylist, and view or delete cached themes.
 
 Without an API key, the built-in patinas still apply their base themes — the LLM layer just stays off until you add one.
 
