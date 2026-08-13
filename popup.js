@@ -41,6 +41,7 @@ async function init() {
   if (st.error) { $("error").hidden = false; $("error").textContent = st.error; }
 
   $("repatinate").disabled = st.siteState !== "on" || st.generating;
+  $("regenerate").disabled = st.siteState !== "on" || st.generating || !st.hasKey;
   $("toggleSite").textContent = st.siteState === "off" ? "Enable on this site" : "Disable on this site";
   $("toggleSite").disabled = st.siteState === "denylisted";
 }
@@ -61,6 +62,23 @@ $("repatinate").addEventListener("click", async () => {
   if (everywhere) chrome.tabs.reload(tab.id);
   else await chrome.runtime.sendMessage({ type: "patina:injectHere", tabId: tab.id });
   window.close();
+});
+
+// Regenerate the currently applied patina for this site, replacing its cached
+// theme (the background flow deletes the cache entry, takes a fresh digest,
+// and asks the model for a noticeably different direction).
+$("regenerate").addEventListener("click", async () => {
+  $("regenerate").disabled = true;
+  $("repatinate").disabled = true;
+  setStatus("generating", "Generating theme…");
+  const res = await chrome.runtime.sendMessage({ type: "patina:repatinate", domain: host, tabId: tab.id });
+  if (res.ok) window.close();
+  else {
+    setStatus("error", "Last attempt failed");
+    $("error").hidden = false; $("error").textContent = res.error;
+    $("regenerate").disabled = false;
+    $("repatinate").disabled = false;
+  }
 });
 
 $("toggleSite").addEventListener("click", async () => {

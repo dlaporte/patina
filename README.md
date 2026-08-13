@@ -11,7 +11,7 @@ Patina uses an LLM (your key, your choice of provider) to generate a site-specif
 - **Five built-in patinas** — each with an instant base theme and a rich spec the LLM uses for site-specific theming
 - **Custom patinas** — describe any aesthetic in a sentence or two ("cottagecore", "Windows 95", "brutalist concrete") and Patina improvises it; edit or delete your creations in Options
 - **Permanent per-site theme cache** — each site is themed once per patina; reloads and revisits apply instantly with zero LLM calls
-- **Deliberate apply** — choosing a patina never restyles anything by itself; **Apply Patina** commits it to the current site. Want a fresh take? Delete the site's cached theme in Options and apply again
+- **Deliberate apply** — choosing a patina never restyles anything by itself; **Apply Patina** commits it to the current site, and the ↻ button next to it regenerates the current theme in a fresh direction (replacing the cached one)
 - **"Patinating…" curtain** — a per-patina loading interstitial covers a site's first visit until its theme is ready (skippable, 15-second cap, can be turned off in Options)
 - **Retro widget runtime** — marquee headlines, sparkle cursor trails, tiled backgrounds, odometer hit counters, and badges, all shipped in the extension and placed by the LLM
 - **Bring your own provider** — Anthropic, OpenAI, OpenRouter, Ollama (local), or any OpenAI-compatible endpoint

@@ -124,6 +124,9 @@ select {
 
 /* ---- Actions ---- */
 .actions { display: grid; gap: 8px; }
+.apply-row { display: flex; gap: 8px; }
+.apply-row #repatinate { flex: 1; }
+.btn.icon { flex: none; font-size: 15px; line-height: 1; padding: 8px 11px; }
 .btn {
   font: 700 12px var(--mono);
   letter-spacing: 0.02em;
