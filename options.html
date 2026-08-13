@@ -2,12 +2,17 @@
 <html>
 <head><meta charset="utf-8"><title>Patina Options</title><link rel="stylesheet" href="options.css"></head>
 <body>
-  <h1>Patina Options</h1>
+  <header class="plate">
+    <img src="icons/icon48.png" alt="" width="34" height="34">
+    <h1>Patina</h1>
+    <span class="plate-tag">Options</span>
+  </header>
 
+  <main>
   <section>
     <h2>Coverage</h2>
-    <label><input type="checkbox" id="enabled"> Patina enabled (global)</label>
-    <label><input type="checkbox" id="everywhere"> Enable everywhere (grants access to all sites)</label>
+    <label class="check"><input type="checkbox" id="enabled"> Patina enabled (global)</label>
+    <label class="check"><input type="checkbox" id="everywhere"> Enable everywhere (grants access to all sites)</label>
     <p class="hint">Without "everywhere", use the popup's "Patinate this page" button per site.</p>
   </section>
 
@@ -28,8 +33,10 @@
     <label>Model <input type="text" id="model"></label>
     <p class="hint" id="modelHint"></p>
     <label>API key <input type="password" id="apiKey"></label>
-    <button id="saveProvider">Save provider</button>
-    <span id="providerSaved" class="saved" hidden>Saved ✓</span>
+    <div class="row">
+      <button id="saveProvider" class="btn primary">Save provider</button>
+      <span id="providerSaved" class="saved" hidden>Saved ✓</span>
+    </div>
   </section>
 
   <section>
@@ -39,9 +46,9 @@
     <label>Name <input type="text" id="customName" placeholder="Cottagecore"></label>
     <label>Describe it <textarea id="customSpec" rows="4"
       placeholder="Soft floral palette, hand-drawn borders, serif type, pressed-flower dividers..."></textarea></label>
-    <div>
-      <button id="addCustom">Add patina</button>
-      <button id="cancelEdit" hidden>Cancel</button>
+    <div class="row">
+      <button id="addCustom" class="btn primary">Add patina</button>
+      <button id="cancelEdit" class="btn ghost" hidden>Cancel</button>
     </div>
     <p class="hint" id="customMsg"></p>
     <p class="hint">Editing or deleting a patina clears its cached site themes, so sites regenerate with the new recipe.</p>
@@ -51,8 +58,10 @@
     <h2>Denylist</h2>
     <p class="hint">One pattern per line. "*.gov" matches a suffix; "chase.com" matches the domain and subdomains.</p>
     <textarea id="denylist" rows="8"></textarea>
-    <button id="saveDenylist">Save denylist</button>
-    <span id="denylistSaved" class="saved" hidden>Saved ✓</span>
+    <div class="row">
+      <button id="saveDenylist" class="btn primary">Save denylist</button>
+      <span id="denylistSaved" class="saved" hidden>Saved ✓</span>
+    </div>
   </section>
 
   <section>
@@ -62,6 +71,7 @@
       <tbody></tbody>
     </table>
   </section>
+  </main>
 
   <script src="common/settings.js"></script>
   <script src="common/cache.js"></script>

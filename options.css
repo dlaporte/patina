@@ -1,15 +1,185 @@
-body { max-width: 640px; margin: 24px auto; font: 14px/1.6 system-ui, sans-serif; padding: 0 16px; }
-section { border: 1px solid #ddd; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
-h1 { font-size: 20px; } h2 { font-size: 15px; margin-top: 0; }
-label { display: block; margin: 8px 0; }
-input[type="text"], input[type="password"], textarea { width: 100%; box-sizing: border-box; }
-.hint { color: #666; font-size: 12px; }
-.saved { color: #0a7a0a; margin-left: 8px; }
+/* Patina options — same oxidized-copper instrument panel as the popup,
+   scaled up to a settings page. Serif for the nameplate; mono for controls. */
+
+:root {
+  --copper: #b87333;
+  --copper-deep: #8a5426;
+  --copper-rim: #6f4320;
+  --verdigris: #43b3a0;
+  --verdigris-deep: #2e8f80;
+  --verdigris-pale: #8fdccb;
+  --parchment: #f2ead9;
+  --parchment-deep: #e7dcc4;
+  --ink: #2b2119;
+  --ink-soft: #6d5f4e;
+  --rust: #b3432b;
+  --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font: 13px/1.6 var(--mono);
+}
+
+/* ---- Nameplate ---- */
+.plate {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 3px solid var(--copper-rim);
+  background:
+    radial-gradient(circle at -2% 30%, var(--verdigris) 44px, transparent 45px),
+    radial-gradient(circle at 2% 90%, var(--verdigris-deep) 34px, transparent 35px),
+    radial-gradient(circle at 8% 4%, var(--verdigris-pale) 14px, transparent 15px),
+    radial-gradient(circle at 12% 66%, var(--verdigris) 7px, transparent 8px),
+    radial-gradient(circle at 16% 30%, var(--verdigris-deep) 4px, transparent 5px),
+    linear-gradient(110deg, #c98a47, var(--copper) 45%, var(--copper-deep));
+}
+.plate img { align-self: center; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35)); }
+.plate h1 {
+  font: italic 600 28px/1 var(--serif);
+  color: var(--parchment);
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+}
+.plate-tag {
+  font: 700 11px var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--verdigris-pale);
+}
+
+/* ---- Sections as panel cards ---- */
+main {
+  max-width: 620px;
+  margin: 24px auto 48px;
+  padding: 0 16px;
+  display: grid;
+  gap: 18px;
+}
+section {
+  background: rgba(255, 255, 255, 0.35);
+  border: 1px solid var(--copper);
+  border-radius: 6px;
+  padding: 16px 20px 18px;
+}
+h2 {
+  font: 700 12px var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--copper-deep);
+  border-bottom: 1px solid var(--parchment-deep);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+h3 {
+  font: 700 11px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 16px 0 6px;
+}
+
+/* ---- Fields ---- */
+label { display: block; margin: 10px 0 4px; font-weight: 700; }
+label.check { display: flex; align-items: center; gap: 8px; font-weight: 400; margin: 6px 0; }
+input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--verdigris-deep); }
+
+input[type="text"], input[type="password"], textarea, select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  font: 13px var(--mono);
+  color: var(--ink);
+  background: var(--parchment-deep);
+  border: 1px solid var(--copper);
+  border-radius: 4px;
+  padding: 7px 10px;
+  box-shadow: inset 0 1px 2px rgba(43, 33, 25, 0.15);
+}
+input:disabled { background: #ded4bf; color: var(--ink-soft); }
+textarea { resize: vertical; }
+select { cursor: pointer; }
+
+.hint { color: var(--ink-soft); font-size: 12px; font-weight: 400; margin: 6px 0; }
+.saved { color: var(--verdigris-deep); font-weight: 700; }
+#customMsg { color: var(--rust); }
+
+.row { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+
+/* ---- Buttons ---- */
+.btn, button {
+  font: 700 12px var(--mono);
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: filter 120ms, border-color 120ms, color 120ms;
+}
+.btn.primary {
+  background: linear-gradient(180deg, #9a6230, var(--copper-deep));
+  color: var(--parchment);
+  border: 1px solid var(--copper-rim);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.btn.primary:hover { filter: brightness(1.12); }
+.btn.primary:active { transform: translateY(1px); box-shadow: none; }
+.btn.ghost, .patina-list button, #cacheTable button {
+  background: transparent;
+  color: var(--copper-deep);
+  border: 1px solid var(--copper);
+}
+.btn.ghost:hover, .patina-list button:hover, #cacheTable button:hover {
+  border-color: var(--verdigris-deep);
+  color: var(--verdigris-deep);
+}
+.patina-list button, #cacheTable button { padding: 3px 10px; font-size: 11px; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--verdigris-deep);
+  outline-offset: 2px;
+}
+
+/* ---- Patina list ---- */
+.patina-list { list-style: none; padding: 0; margin: 0 0 4px; }
+.patina-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 2px;
+  border-bottom: 1px solid var(--parchment-deep);
+}
+.patina-list li span:first-child { flex: 1; font-weight: 700; }
+.patina-list .tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--verdigris-deep);
+  background: rgba(67, 179, 160, 0.14);
+  border: 1px solid rgba(67, 179, 160, 0.4);
+  border-radius: 9px;
+  padding: 1px 9px;
+}
+
+/* ---- Cache table ---- */
 table { width: 100%; border-collapse: collapse; }
-th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid #eee; font-size: 13px; }
-input:disabled { background: #f3f3f3; color: #777; }
-.patina-list { list-style: none; padding: 0; margin: 0 0 12px; }
-.patina-list li { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid #eee; }
-.patina-list li span:first-child { flex: 1; }
-.patina-list .tag { font-size: 11px; color: #888; background: #f0f0f0; border-radius: 8px; padding: 1px 8px; }
-h3 { font-size: 13px; margin: 14px 0 4px; }
+th {
+  text-align: left;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--copper-deep);
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--copper);
+}
+td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--parchment-deep);
+  font-size: 12px;
+}
