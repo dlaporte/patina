@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Patina",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Restyles the web to match your aesthetic. Pick a patina; every site gets the finish.",
   "permissions": ["storage", "scripting", "activeTab", "tabs"],
   "optional_host_permissions": ["<all_urls>"],
