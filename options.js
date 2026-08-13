@@ -4,17 +4,54 @@ const $ = (id) => document.getElementById(id);
 function flash(id) { const el = $(id); el.hidden = false; setTimeout(() => { el.hidden = true; }, 1500); }
 function slugify(name) { return "custom-" + name.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
+// Each preset maps a user-facing provider to an adapter type + its API base URL.
+// lockBase: the Anthropic adapter hardcodes its endpoint, so the URL is display-only.
+const PROVIDER_PRESETS = {
+  anthropic: { type: "anthropic", baseUrl: "https://api.anthropic.com/v1", lockBase: true,
+    modelPlaceholder: "claude-opus-5",
+    hint: "claude-opus-5 (best) or claude-haiku-4-5 (fast/cheap)." },
+  openai: { type: "openai", baseUrl: "https://api.openai.com/v1",
+    modelPlaceholder: "gpt-4o",
+    hint: "Any OpenAI model id." },
+  openrouter: { type: "openai", baseUrl: "https://openrouter.ai/api/v1",
+    modelPlaceholder: "anthropic/claude-sonnet-4.5",
+    hint: "Any OpenRouter model path (provider/model)." },
+  ollama: { type: "openai", baseUrl: "http://localhost:11434/v1",
+    modelPlaceholder: "llama3",
+    hint: "A locally pulled model. The API key can be anything." },
+  custom: { type: "openai", baseUrl: "",
+    modelPlaceholder: "model-id",
+    hint: "Any OpenAI-compatible endpoint and the model id it serves." }
+};
+
+function inferPreset(provider) {
+  if (PROVIDER_PRESETS[provider.preset]) return provider.preset;
+  if (provider.type === "anthropic") return "anthropic";
+  const match = Object.entries(PROVIDER_PRESETS)
+    .find(([, p]) => p.type === "openai" && p.baseUrl && p.baseUrl === provider.baseUrl);
+  if (match) return match[0];
+  return provider.baseUrl ? "custom" : "openai";
+}
+
+function applyPresetUI(presetId, storedBaseUrl) {
+  const p = PROVIDER_PRESETS[presetId] || PROVIDER_PRESETS.custom;
+  $("baseUrl").value = p.lockBase ? p.baseUrl : (storedBaseUrl != null ? storedBaseUrl : p.baseUrl);
+  $("baseUrl").disabled = !!p.lockBase;
+  $("model").placeholder = p.modelPlaceholder;
+  $("modelHint").textContent = p.hint;
+}
+
 async function render() {
   const settings = await P.settings.getSettings();
 
   $("enabled").checked = settings.enabled;
   $("everywhere").checked = await chrome.permissions.contains({ origins: ["<all_urls>"] });
 
-  $("providerType").value = settings.provider.type;
-  $("baseUrl").value = settings.provider.baseUrl;
+  const presetId = inferPreset(settings.provider);
+  $("providerType").value = presetId;
+  applyPresetUI(presetId, settings.provider.baseUrl || null);
   $("model").value = settings.provider.model;
   $("apiKey").value = settings.provider.apiKey;
-  $("baseUrlField").hidden = settings.provider.type !== "openai";
 
   $("denylist").value = settings.denylist.join("\n");
 
@@ -70,18 +107,18 @@ $("everywhere").addEventListener("change", async (e) => {
 });
 
 $("providerType").addEventListener("change", (e) => {
-  $("baseUrlField").hidden = e.target.value !== "openai";
-  $("modelHint").textContent = e.target.value === "anthropic"
-    ? "Anthropic: claude-opus-5 (best) or claude-haiku-4-5 (fast/cheap)."
-    : "Any model id your endpoint serves, e.g. gpt-4o or llama3.";
+  applyPresetUI(e.target.value, null);
 });
 
 $("saveProvider").addEventListener("click", async () => {
+  const presetId = $("providerType").value;
+  const p = PROVIDER_PRESETS[presetId] || PROVIDER_PRESETS.custom;
   await P.settings.saveSettings({
     provider: {
-      type: $("providerType").value,
-      baseUrl: $("baseUrl").value.trim(),
-      model: $("model").value.trim(),
+      preset: presetId,
+      type: p.type,
+      baseUrl: p.lockBase ? "" : $("baseUrl").value.trim(),
+      model: $("model").value.trim() || p.modelPlaceholder,
       apiKey: $("apiKey").value.trim()
     }
   });

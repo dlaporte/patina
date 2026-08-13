@@ -16,12 +16,15 @@
     <label>Provider
       <select id="providerType">
         <option value="anthropic">Anthropic</option>
-        <option value="openai">OpenAI-compatible</option>
+        <option value="openai">OpenAI</option>
+        <option value="openrouter">OpenRouter</option>
+        <option value="ollama">Ollama (local)</option>
+        <option value="custom">Custom (OpenAI-compatible)</option>
       </select>
     </label>
-    <label id="baseUrlField" hidden>Base URL <input type="text" id="baseUrl" placeholder="https://api.openai.com/v1"></label>
-    <label>Model <input type="text" id="model" placeholder="claude-opus-5"></label>
-    <p class="hint" id="modelHint">Anthropic: claude-opus-5 (best) or claude-haiku-4-5 (fast/cheap).</p>
+    <label id="baseUrlField">Base URL <input type="text" id="baseUrl"></label>
+    <label>Model <input type="text" id="model"></label>
+    <p class="hint" id="modelHint"></p>
     <label>API key <input type="password" id="apiKey"></label>
     <button id="saveProvider">Save provider</button>
     <span id="providerSaved" class="saved" hidden>Saved ✓</span>
