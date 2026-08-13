@@ -18,11 +18,7 @@
     psychedelic: { bg: "#4a148c", asset: "tiedye", color: "#ffffff", accent: "#ffb340",
       font: '"Cooper Black", Georgia, serif', title: "Getting groovy" },
     enterprise: { bg: "#000000", color: "#ff9c00", accent: "#ff9966",
-      font: '"Arial Narrow", "Helvetica Neue", sans-serif', title: "WORKING · APPLYING PATINA 47291.3" },
-    soviet: { bg: "#f2e8d5", color: "#cc2222", accent: "#1a1a1a",
-      font: 'Impact, "Arial Narrow", sans-serif', title: "ПАТИНИРОВАНИЕ" },
-    murica: { bg: "#3c3b6e", color: "#ffffff", accent: "#b22234",
-      font: 'Impact, "Arial Black", sans-serif', title: "FREEDOM LOADING ★" }
+      font: '"Arial Narrow", "Helvetica Neue", sans-serif', title: "WORKING · APPLYING PATINA 47291.3" }
   };
   const DEFAULT_LOOK = { bg: "#f2ead9", color: "#8a5426", accent: "#2e8f80",
     font: "Georgia, serif", title: "Patinating" };

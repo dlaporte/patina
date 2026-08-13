@@ -26,7 +26,7 @@ test("themeKey is namespaced and stable", () => {
 test("put/get/delete round-trip", async () => {
   await cache.putTheme("example.com", "terminal", record);
   assert.deepEqual(await cache.getTheme("example.com", "terminal"), record);
-  assert.equal(await cache.getTheme("example.com", "soviet"), null); // different aesthetic = different key
+  assert.equal(await cache.getTheme("example.com", "psychedelic"), null); // different aesthetic = different key
   await cache.deleteTheme("example.com", "terminal");
   assert.equal(await cache.getTheme("example.com", "terminal"), null);
 });
@@ -34,9 +34,9 @@ test("put/get/delete round-trip", async () => {
 test("listThemes returns only theme entries, parsed", async () => {
   await chrome.storage.local.set({ settings: { junk: true } });
   await cache.putTheme("a.com", "terminal", record);
-  await cache.putTheme("b.com", "soviet", record);
+  await cache.putTheme("b.com", "psychedelic", record);
   const list = await cache.listThemes();
   assert.equal(list.length, 2);
   assert.deepEqual(list.map((t) => t.domain).sort(), ["a.com", "b.com"]);
-  assert.deepEqual(list.map((t) => t.aestheticId).sort(), ["soviet", "terminal"]);
+  assert.deepEqual(list.map((t) => t.aestheticId).sort(), ["psychedelic", "terminal"]);
 });

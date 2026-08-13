@@ -3,10 +3,10 @@ const assert = require("node:assert");
 const { PRESETS, getAesthetic } = require("../common/presets.js");
 const { sanitizeCss } = require("../common/sanitizer.js");
 
-test("ships exactly the seven presets with unique ids", () => {
+test("ships exactly the five presets with unique ids", () => {
   const ids = PRESETS.map((p) => p.id);
-  assert.deepEqual(ids.sort(), ["8bit", "enterprise", "murica", "psychedelic", "soviet", "superhighway", "terminal"]);
-  assert.equal(new Set(ids).size, 7);
+  assert.deepEqual(ids.sort(), ["8bit", "enterprise", "psychedelic", "superhighway", "terminal"]);
+  assert.equal(new Set(ids).size, 5);
 });
 
 test("every preset has name, spec, and baseCss strings", () => {

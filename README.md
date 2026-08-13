@@ -1,6 +1,6 @@
 # Patina
 
-A Chrome extension that restyles the web to match your aesthetic. Pick a patina — Terminal, 8-bit, Information Superhighway, Psychedelic, Enterprise, Soviet, Murica, or one you invent — and every site you visit gets the finish.
+A Chrome extension that restyles the web to match your aesthetic. Pick a patina — Terminal, 8-bit, Information Superhighway, Psychedelic, Enterprise, or one you invent — and every site you visit gets the finish.
 
 ## What It Does
 
@@ -8,7 +8,7 @@ Patina uses an LLM (your key, your choice of provider) to generate a site-specif
 
 ## Features
 
-- **Seven built-in patinas** — each with an instant base theme and a rich spec the LLM uses for site-specific theming
+- **Five built-in patinas** — each with an instant base theme and a rich spec the LLM uses for site-specific theming
 - **Custom patinas** — describe any aesthetic in a sentence or two ("cottagecore", "Windows 95", "brutalist concrete") and Patina improvises it; edit or delete your creations in Options
 - **Permanent per-site theme cache** — each site is themed once per patina; reloads and revisits apply instantly with zero LLM calls
 - **Deliberate apply** — choosing a patina never restyles anything by itself; **Apply Patina** commits it to the current site. Want a fresh take? Delete the site's cached theme in Options and apply again
@@ -27,8 +27,6 @@ Patina uses an LLM (your key, your choice of provider) to generate a site-specif
 | **8-bit** | NES-era: pixel fonts, chunky borders, hard primary palette |
 | **Psychedelic** | Late-60s poster energy: tie-dye, bubble type, slow hue-shift headings |
 | **Enterprise** | LCARS — the ST:TNG bridge computer: black, salmon/lavender/gold pills and elbows |
-| **Soviet** | Constructivist propaganda: cream paper, red banners, condensed uppercase, star bullets |
-| **Murica** | Maximal Americana: stars, stripes, eagles, slab type with red-white-and-blue everything |
 
 ## How to Install
 

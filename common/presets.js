@@ -60,27 +60,6 @@ a { color: #ff9c00 !important; text-decoration: none !important; }
 a:hover { color: #ff9966 !important; }
 h1, h2, h3 { color: #cc99cc !important; text-transform: uppercase; letter-spacing: 1px; }
 button, input[type="submit"] { background: #ff9966 !important; color: #000 !important; border: none !important; border-radius: 24px !important; text-transform: uppercase; }`
-    },
-    {
-      id: "soviet",
-      name: "Soviet",
-      spec: `Soviet constructivist propaganda poster. Aged-paper cream background (#f2e8d5), near-black ink (#1a1a1a), and revolutionary red (#cc2222) doing all the accent work. Type: heavy condensed uppercase display ("Impact", "Haettenschweiler", "Arial Narrow", sans-serif) for headings — big, loud, tightly leaded; body text in a sturdy serif. Headings become red banners: red background, cream text, slight skew (transform: skew(-2deg)), generous horizontal padding. Thick 3px solid black borders on panels and images; no border-radius. List bullets become red stars (list-style-type: "★ "). Links: dark red (#992222), underlined, bold. Diagonal energy where possible (skewed banners, bold horizontal rules). Widgets: a badge reading "ГОТОВО (READY)"; a marquee on the main heading.`,
-      baseCss: `body { background-color: #f2e8d5 !important; color: #1a1a1a !important; }
-a { color: #992222 !important; font-weight: bold !important; }
-h1, h2, h3 { background: #cc2222; color: #f2e8d5 !important; font-family: Impact, "Arial Narrow", sans-serif !important; text-transform: uppercase; display: inline-block; padding: 2px 12px; transform: skew(-2deg); }
-ul { list-style-type: "★ "; }
-button, input[type="submit"] { background: #cc2222 !important; color: #f2e8d5 !important; border: 3px solid #1a1a1a !important; border-radius: 0 !important; text-transform: uppercase; }`
-    },
-    {
-      id: "murica",
-      name: "Murica",
-      spec: `Maximal county-fair Americana. Palette: old-glory red #b22234, white, and navy #3c3b6e — and use all three constantly. Body background: subtle red-and-white awning stripes via repeating-linear-gradient (white dominant so content stays readable); content panels solid white with a 3px navy border. Headings: huge slab/display type (Impact or "Arial Black"), navy fill with a red text-shadow offset (text-shadow: 3px 3px 0 #b22234), stars "★" flanking the main h1 via ::before/::after. Links bold navy; buttons red with white text and a navy border. List bullets are stars. Sprinkle small waving-flag energy: skewed red/white striped accents on hr elements. Widgets: a badge reading "FREEDOM CERTIFIED ★"; a marquee on the main heading; sparkle_cursor.`,
-      baseCss: `body { background-image: repeating-linear-gradient(90deg, #ffffff 0 48px, #f6e6e8 48px 96px) !important; color: #1a1a2e !important; }
-main, article, section { background: #ffffff; border: 3px solid #3c3b6e; }
-a { color: #3c3b6e !important; font-weight: bold !important; }
-h1, h2, h3 { color: #3c3b6e !important; font-family: Impact, "Arial Black", sans-serif !important; text-shadow: 2px 2px 0 #b22234; }
-ul { list-style-type: "★ "; }
-button, input[type="submit"] { background: #b22234 !important; color: #fff !important; border: 2px solid #3c3b6e !important; text-transform: uppercase; }`
     }
   ];
 

@@ -57,9 +57,9 @@ test("getSettings merges stored partial settings over defaults", async () => {
 });
 
 test("saveSettings round-trips a patch", async () => {
-  await S.saveSettings({ aestheticId: "soviet" });
+  await S.saveSettings({ aestheticId: "psychedelic" });
   const s = await S.getSettings();
-  assert.equal(s.aestheticId, "soviet");
+  assert.equal(s.aestheticId, "psychedelic");
 });
 
 test("saveSettings deep-merges provider and siteOverrides patches", async () => {
