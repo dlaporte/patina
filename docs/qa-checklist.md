@@ -21,7 +21,9 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 - [ ] Switching patina and back: both directions instant after first generation each
 
 ## Apply / Re-apply
-- [ ] Popup → Re-apply Patina: new theme visibly different direction, applied without reload
+- [ ] Choosing a patina in the picker changes nothing until "Apply Patina" is clicked
+- [ ] Apply Patina: cached patina applies instantly; a new one generates (curtain shows)
+- [ ] Regeneration: delete the site's cached theme in Options, then Apply Patina
 - [ ] Cache viewer shows updated generation date
 
 ## Controls

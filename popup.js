@@ -43,8 +43,7 @@ async function init() {
 
   $("patinate").hidden = everywhere || st.siteState !== "on";
   $("patinate").disabled = false;
-  $("repatinate").textContent = st.cached ? "♻ Re-apply Patina" : "Apply Patina";
-  $("repatinate").disabled = st.siteState !== "on" || !st.hasKey || st.generating;
+  $("repatinate").disabled = st.siteState !== "on" || st.generating;
   $("toggleSite").textContent = st.siteState === "off" ? "Enable on this site" : "Disable on this site";
   $("toggleSite").disabled = st.siteState === "denylisted";
 }
@@ -54,21 +53,13 @@ function setStatus(state, text) {
   $("status").textContent = text;
 }
 
-$("aesthetic").addEventListener("change", async (e) => {
-  await P.settings.saveSettings({ aestheticId: e.target.value });
-  if (tab) chrome.tabs.reload(tab.id);
-  window.close();
-});
-
+// Choosing a patina in the picker is only a selection — nothing changes on the
+// page until "Apply Patina" commits it.
 $("repatinate").addEventListener("click", async () => {
   $("repatinate").disabled = true;
-  setStatus("generating", "Generating theme…");
-  const res = await chrome.runtime.sendMessage({ type: "patina:repatinate", domain: host, tabId: tab.id });
-  if (res.ok) window.close();
-  else {
-    setStatus("error", "Last attempt failed");
-    $("error").hidden = false; $("error").textContent = res.error; $("repatinate").disabled = false;
-  }
+  await P.settings.saveSettings({ aestheticId: $("aesthetic").value });
+  chrome.tabs.reload(tab.id); // cache hit applies instantly; a new patina generates (with curtain)
+  window.close();
 });
 
 $("toggleSite").addEventListener("click", async () => {
@@ -80,6 +71,7 @@ $("toggleSite").addEventListener("click", async () => {
 });
 
 $("patinate").addEventListener("click", async () => {
+  await P.settings.saveSettings({ aestheticId: $("aesthetic").value }); // commit the selection here too
   await chrome.runtime.sendMessage({ type: "patina:injectHere", tabId: tab.id });
   window.close();
 });
