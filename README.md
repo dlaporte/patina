@@ -43,7 +43,7 @@ This extension is not published to the Chrome Web Store. To install it manually:
 ## How to Use
 
 1. **Add a key.** Open Patina's Options (toolbar icon → Options). Pick a provider, paste your API key, and choose a model. A fast, cheap model (`gpt-5.6-luna`, `claude-haiku-4-5`) is usually all Patina needs — each site is themed once and cached forever.
-2. **Turn it on.** In Options, toggle **Enable everywhere** and accept Chrome's permission prompt. (Prefer per-site control? Skip the toggle and use **Patinate this page** in the popup instead.)
+2. **Turn it on.** In Options, toggle **Enable everywhere** and accept Chrome's permission prompt. (Prefer per-site control? Skip the toggle — **Apply Patina** in the popup then themes just the current tab.)
 3. **Browse.** A new site shows a themed "Patinating…" curtain until its custom theme is ready (or, with the curtain off, the patina's instant base theme that upgrades in place). Everything after that is served from cache.
 4. **Steer it.** From the popup: the power switch turns Patina off everywhere, and you can pick a patina and click **Apply Patina** to commit it to the current site, or disable Patina for that site. In Options: create and edit custom patinas, manage the denylist, and view or delete cached themes.
 
@@ -61,7 +61,7 @@ The LLM only ever produces data (CSS and JSON). Every line of executable code sh
 |---|---|
 | `storage` | Save your settings and the per-site theme cache |
 | `scripting` | Register content scripts dynamically and inject on demand |
-| `activeTab` | Theme the current tab via "Patinate this page" without broad host access |
+| `activeTab` | Theme the current tab on demand (Apply Patina without the "everywhere" grant) |
 | `tabs` | Read the active tab's URL for the popup and reload after setting changes |
 | `<all_urls>` *(optional)* | Only requested if you enable "everywhere" mode; lets Patina theme sites automatically as you browse |
 

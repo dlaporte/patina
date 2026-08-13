@@ -34,7 +34,8 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 
 ## On-demand mode
 - [ ] Options → "Enable everywhere" OFF → new sites load un-themed
-- [ ] Popup → "Patinate this page" themes the current tab only
+- [ ] Popup → Apply Patina themes the current tab only
+- [ ] Applying a different patina to an already-themed tab swaps it (old widgets/styles swept)
 
 ## SPA behavior (YouTube)
 - [ ] Theme survives in-app navigation (style element re-asserted)

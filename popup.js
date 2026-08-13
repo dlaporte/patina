@@ -29,7 +29,6 @@ async function init() {
   }
 
   const st = await chrome.runtime.sendMessage({ type: "patina:status", domain: host });
-  const everywhere = await chrome.permissions.contains({ origins: ["<all_urls>"] });
 
   if (st.siteState === "denylisted") setStatus("off", "This site is denylisted");
   else if (st.siteState === "off") setStatus("off", "Patina is off here");
@@ -41,8 +40,6 @@ async function init() {
 
   if (st.error) { $("error").hidden = false; $("error").textContent = st.error; }
 
-  $("patinate").hidden = everywhere || st.siteState !== "on";
-  $("patinate").disabled = false;
   $("repatinate").disabled = st.siteState !== "on" || st.generating;
   $("toggleSite").textContent = st.siteState === "off" ? "Enable on this site" : "Disable on this site";
   $("toggleSite").disabled = st.siteState === "denylisted";
@@ -54,11 +51,15 @@ function setStatus(state, text) {
 }
 
 // Choosing a patina in the picker is only a selection — nothing changes on the
-// page until "Apply Patina" commits it.
+// page until "Apply Patina" commits it. With <all_urls> granted the reload
+// re-themes via the registered content scripts; in on-demand mode we inject
+// into the current tab instead (re-injection re-runs the theming lifecycle).
 $("repatinate").addEventListener("click", async () => {
   $("repatinate").disabled = true;
   await P.settings.saveSettings({ aestheticId: $("aesthetic").value });
-  chrome.tabs.reload(tab.id); // cache hit applies instantly; a new patina generates (with curtain)
+  const everywhere = await chrome.permissions.contains({ origins: ["<all_urls>"] });
+  if (everywhere) chrome.tabs.reload(tab.id);
+  else await chrome.runtime.sendMessage({ type: "patina:injectHere", tabId: tab.id });
   window.close();
 });
 
@@ -67,12 +68,6 @@ $("toggleSite").addEventListener("click", async () => {
   const current = settings.siteOverrides[host] === "off" ? "on" : "off";
   await P.settings.saveSettings({ siteOverrides: { ...settings.siteOverrides, [host]: current } });
   chrome.tabs.reload(tab.id);
-  window.close();
-});
-
-$("patinate").addEventListener("click", async () => {
-  await P.settings.saveSettings({ aestheticId: $("aesthetic").value }); // commit the selection here too
-  await chrome.runtime.sendMessage({ type: "patina:injectHere", tabId: tab.id });
   window.close();
 });
 

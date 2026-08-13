@@ -1,6 +1,12 @@
 (() => {
   if (window.top !== window) return;      // skip iframes
-  if (window.__patinaLoaded) return;      // guard double-injection (registered + on-demand)
+  if (window.__patinaLoaded) {
+    // Already injected (registered + on-demand overlap, or a repeat Apply):
+    // don't re-register listeners, but do re-run the theming lifecycle so a
+    // newly selected patina takes effect.
+    if (typeof window.__patinaRun === "function") window.__patinaRun();
+    return;
+  }
   window.__patinaLoaded = true;
 
   const P = globalThis.Patina;
@@ -29,13 +35,17 @@
     }
   });
 
-  (async () => {
+  window.__patinaRun = async () => {
     const settings = await P.settings.getSettings();
     const host = P.settings.normalizeHost(location.hostname);
-    if (P.settings.getSiteState(host, settings) !== "on") return;
+    if (P.settings.getSiteState(host, settings) !== "on") { P.apply.clearPatina(document); return; }
 
     const aesthetic = P.presets.getAesthetic(settings.aestheticId, settings);
     if (!aesthetic) return;
+
+    // A re-run may be switching patinas: sweep the previous theme/widgets first
+    // (no-op on a fresh page).
+    P.apply.clearPatina(document);
 
     const cached = await P.cache.getTheme(host, aesthetic.id);
     if (cached) {
@@ -63,5 +73,6 @@
         if (useCurtain) P.curtain.hide(document);
       }
     });
-  })();
+  };
+  window.__patinaRun();
 })();
