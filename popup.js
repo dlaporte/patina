@@ -41,7 +41,8 @@ async function init() {
   if (st.error) { $("error").hidden = false; $("error").textContent = st.error; }
 
   $("repatinate").disabled = st.siteState !== "on" || st.generating;
-  $("regenerate").disabled = st.siteState !== "on" || st.generating || !st.hasKey;
+  // Regenerate only makes sense once a theme exists to replace.
+  $("regenerate").disabled = st.siteState !== "on" || st.generating || !st.hasKey || !st.cached;
   $("toggleSite").textContent = st.siteState === "off" ? "Enable on this site" : "Disable on this site";
   $("toggleSite").disabled = st.siteState === "denylisted";
 }
