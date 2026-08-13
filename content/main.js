@@ -28,8 +28,17 @@
     if (msg.type === "patina:getDigest") {
       sendResponse({ digest: P.digest.capDigest(P.digest.buildDigest(document, window)) });
     } else if (msg.type === "patina:apply") {
-      P.apply.clearPatina(document);
+      P.apply.clearPatina(document); // also lifts the curtain (it carries data-patina)
       applyEnvelope(msg.envelope);
+    } else if (msg.type === "patina:showCurtain") {
+      (async () => {
+        const settings = await P.settings.getSettings();
+        if (!settings.interstitial) return;
+        const aesthetic = P.presets.getAesthetic(settings.aestheticId, settings);
+        if (aesthetic) P.curtain.show(document, aesthetic);
+      })();
+    } else if (msg.type === "patina:hideCurtain") {
+      P.curtain.hide(document);
     } else if (msg.type === "patina:disable") {
       P.apply.clearPatina(document);
     }

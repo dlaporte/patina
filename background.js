@@ -130,18 +130,25 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         if (inFlight.size === 0) chrome.action.setBadgeText({ text: "" });
 
       } else if (msg.type === "patina:repatinate") {
-        const settings = await P.settings.getSettings();
-        const prev = await P.cache.getTheme(msg.domain, settings.aestheticId);
-        await P.cache.deleteTheme(msg.domain, settings.aestheticId);
-        const dig = await chrome.tabs.sendMessage(msg.tabId, { type: "patina:getDigest" });
-        const envelope = await generate({
-          domain: msg.domain, aestheticId: settings.aestheticId, digest: dig.digest,
-          // Only steer away from a previous theme if one actually existed;
-          // a fresh "Apply Patina" gets a clean prompt.
-          variationNotes: prev ? (prev.envelope.notes || "no summary recorded") : null
-        });
-        await chrome.tabs.sendMessage(msg.tabId, { type: "patina:apply", envelope });
-        sendResponse({ ok: true });
+        try {
+          // Curtain up while we regenerate; the apply sweep lifts it on success.
+          await chrome.tabs.sendMessage(msg.tabId, { type: "patina:showCurtain" }).catch(() => {});
+          const settings = await P.settings.getSettings();
+          const prev = await P.cache.getTheme(msg.domain, settings.aestheticId);
+          await P.cache.deleteTheme(msg.domain, settings.aestheticId);
+          const dig = await chrome.tabs.sendMessage(msg.tabId, { type: "patina:getDigest" });
+          const envelope = await generate({
+            domain: msg.domain, aestheticId: settings.aestheticId, digest: dig.digest,
+            // Only steer away from a previous theme if one actually existed;
+            // a fresh "Apply Patina" gets a clean prompt.
+            variationNotes: prev ? (prev.envelope.notes || "no summary recorded") : null
+          });
+          await chrome.tabs.sendMessage(msg.tabId, { type: "patina:apply", envelope });
+          sendResponse({ ok: true });
+        } catch (e) {
+          chrome.tabs.sendMessage(msg.tabId, { type: "patina:hideCurtain" }).catch(() => {});
+          throw e;
+        }
 
       } else if (msg.type === "patina:injectHere") {
         await chrome.scripting.executeScript({ target: { tabId: msg.tabId }, files: CONTENT_SCRIPTS });

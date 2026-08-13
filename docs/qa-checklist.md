@@ -23,7 +23,7 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 ## Apply / Re-apply
 - [ ] Choosing a patina in the picker changes nothing until "Apply Patina" is clicked
 - [ ] Apply Patina: cached patina applies instantly; a new one generates (curtain shows)
-- [ ] Regeneration: popup ↻ regenerates the current patina, overwriting the cached theme without a reload
+- [ ] Regeneration: popup ↻ shows the curtain, regenerates, and overwrites the cached theme without a reload
 - [ ] Cache viewer shows updated generation date
 
 ## Controls
