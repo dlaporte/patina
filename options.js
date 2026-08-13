@@ -131,10 +131,32 @@ async function render() {
     tr.appendChild(td);
     tbody.appendChild(tr);
   }
+
+  const themeCount = tbody.children.length;
+  $("cacheEmpty").hidden = themeCount > 0;
+  $("deleteAllThemes").hidden = themeCount === 0;
+  $("deleteAllConfirm").hidden = true;
 }
 
 
 $("interstitial").addEventListener("change", async (e) => { await P.settings.saveSettings({ interstitial: e.target.checked }); });
+
+$("deleteAllThemes").addEventListener("click", () => {
+  $("deleteAllThemes").hidden = true;
+  $("deleteAllConfirm").hidden = false;
+});
+
+$("deleteAllNo").addEventListener("click", () => {
+  $("deleteAllConfirm").hidden = true;
+  $("deleteAllThemes").hidden = false;
+});
+
+$("deleteAllYes").addEventListener("click", async () => {
+  for (const t of await P.cache.listThemes()) {
+    await P.cache.deleteTheme(t.domain, t.aestheticId);
+  }
+  render();
+});
 
 $("everywhere").addEventListener("change", async (e) => {
   if (e.target.checked) {
