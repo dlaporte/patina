@@ -41,3 +41,11 @@ test("throws with status on non-2xx", async () => {
   const fakeFetch = async () => ({ ok: false, status: 429, text: async () => "rate limited" });
   await assert.rejects(generateTheme({ apiKey: "k", model: "m", system: "s", user: "u" }, fakeFetch), /429/);
 });
+
+test("throws a clear error on an empty completion", async () => {
+  const fakeFetch = async () => ({ ok: true, json: async () => ({ choices: [] }) });
+  await assert.rejects(
+    generateTheme({ apiKey: "k", model: "m", system: "s", user: "u" }, fakeFetch),
+    /Empty completion/
+  );
+});

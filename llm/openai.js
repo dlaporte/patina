@@ -30,6 +30,9 @@
     }
     const data = await res.json();
     const text = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : "";
+    if (!text || !String(text).trim()) {
+      throw new Error("Empty completion from provider — check the model id and base URL");
+    }
     return JSON.parse(stripFences(text));
   }
 

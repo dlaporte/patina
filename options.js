@@ -108,6 +108,12 @@ async function render() {
     list.appendChild(li);
   }
 
+  await renderCacheTable(settings);
+}
+
+// Separate from render() so the storage listener can refresh the table while
+// the user is mid-typing in the form fields above it.
+async function renderCacheTable(settings) {
   const tbody = $("cacheTable").querySelector("tbody");
   tbody.innerHTML = "";
   for (const t of await P.cache.listThemes()) {
@@ -219,6 +225,14 @@ $("saveDenylist").addEventListener("click", async () => {
   const denylist = $("denylist").value.split("\n").map((s) => s.trim()).filter(Boolean);
   await P.settings.saveSettings({ denylist });
   flash("denylistSaved");
+});
+
+// Live-refresh the cache table as themes are generated or deleted while
+// this page is open (e.g. browsing in another window during testing).
+chrome.storage.onChanged.addListener(async (changes, area) => {
+  if (area !== "local") return;
+  if (!Object.keys(changes).some((k) => k.startsWith("theme::"))) return;
+  renderCacheTable(await P.settings.getSettings());
 });
 
 render();

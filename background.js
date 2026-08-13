@@ -14,18 +14,33 @@ const CONTENT_SCRIPTS = [
 const inFlight = new Map(); // themeKey -> Promise<envelope>
 const lastError = new Map(); // themeKey -> string
 
+// Toolbar activity light: verdigris "…" while generating, rust "!" after a
+// failure (cleared once the popup has shown the error).
+function updateBadge() {
+  if (inFlight.size > 0) {
+    chrome.action.setBadgeBackgroundColor({ color: "#2e8f80" });
+    chrome.action.setBadgeText({ text: "…" });
+  } else if (lastError.size > 0) {
+    chrome.action.setBadgeBackgroundColor({ color: "#b3432b" });
+    chrome.action.setBadgeText({ text: "!" });
+  } else {
+    chrome.action.setBadgeText({ text: "" });
+  }
+}
+
 // --- Content-script registration (everywhere-automatic mode) ---
 async function ensureRegistered() {
   const granted = await chrome.permissions.contains({ origins: ["<all_urls>"] });
   const existing = await chrome.scripting.getRegisteredContentScripts({ ids: ["patina"] }).catch(() => []);
   if (granted && existing.length === 0) {
+    // Two trigger listeners can race; a duplicate-id rejection here is benign.
     await chrome.scripting.registerContentScripts([{
       id: "patina",
       matches: ["<all_urls>"],
       js: CONTENT_SCRIPTS,
       runAt: "document_start",
       persistAcrossSessions: true
-    }]);
+    }]).catch((e) => console.warn("[patina] registerContentScripts:", e.message));
   } else if (!granted && existing.length > 0) {
     await chrome.scripting.unregisterContentScripts({ ids: ["patina"] }).catch(() => {});
   }
@@ -80,6 +95,7 @@ async function generate({ domain, aestheticId, digest, variationNotes }) {
 
   inFlight.set(key, job);
   lastError.delete(key);
+  updateBadge();
   try {
     return await job;
   } catch (e) {
@@ -87,6 +103,7 @@ async function generate({ domain, aestheticId, digest, variationNotes }) {
     throw e;
   } finally {
     inFlight.delete(key);
+    updateBadge();
   }
 }
 
@@ -109,6 +126,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           error: lastError.get(key) || null,
           hasKey: !!settings.provider.apiKey
         });
+        // The popup has now surfaced any error — retire the "!" badge.
+        if (inFlight.size === 0) chrome.action.setBadgeText({ text: "" });
 
       } else if (msg.type === "patina:repatinate") {
         const settings = await P.settings.getSettings();
