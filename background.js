@@ -117,7 +117,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         const dig = await chrome.tabs.sendMessage(msg.tabId, { type: "patina:getDigest" });
         const envelope = await generate({
           domain: msg.domain, aestheticId: settings.aestheticId, digest: dig.digest,
-          variationNotes: (prev && prev.envelope.notes) || "no summary recorded"
+          // Only steer away from a previous theme if one actually existed;
+          // a fresh "Apply Patina" gets a clean prompt.
+          variationNotes: prev ? (prev.envelope.notes || "no summary recorded") : null
         });
         await chrome.tabs.sendMessage(msg.tabId, { type: "patina:apply", envelope });
         sendResponse({ ok: true });

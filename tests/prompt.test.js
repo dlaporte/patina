@@ -46,3 +46,8 @@ test("css rules carry contrast pairing, minified-class, and dense-app guidance",
   assert.ok(p.includes("classesLookMinified"));
   assert.ok(p.toLowerCase().includes("dense application"));
 });
+
+test("null previousNotes yields no variation instruction", () => {
+  const m = buildUserMessage({ title: "X" }, { previousNotes: null });
+  assert.ok(!m.toLowerCase().includes("different direction"));
+});

@@ -43,6 +43,7 @@ async function init() {
 
   $("patinate").hidden = everywhere || st.siteState !== "on";
   $("patinate").disabled = false;
+  $("repatinate").textContent = st.cached ? "♻ Re-apply Patina" : "Apply Patina";
   $("repatinate").disabled = st.siteState !== "on" || !st.hasKey || st.generating;
   $("toggleSite").textContent = st.siteState === "off" ? "Enable on this site" : "Disable on this site";
   $("toggleSite").disabled = st.siteState === "denylisted";

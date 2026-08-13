@@ -20,8 +20,8 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 - [ ] Second page on same domain: instant, no generation
 - [ ] Switching patina and back: both directions instant after first generation each
 
-## Re-patinate
-- [ ] Popup → Re-patinate: new theme visibly different direction, applied without reload
+## Apply / Re-apply
+- [ ] Popup → Re-apply Patina: new theme visibly different direction, applied without reload
 - [ ] Cache viewer shows updated generation date
 
 ## Controls
