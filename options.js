@@ -4,6 +4,24 @@ const $ = (id) => document.getElementById(id);
 function flash(id) { const el = $(id); el.hidden = false; setTimeout(() => { el.hidden = true; }, 1500); }
 function slugify(name) { return "custom-" + name.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
+let editingPatinaId = null;
+
+function setPatinaForm(custom) {
+  editingPatinaId = custom ? custom.id : null;
+  $("customFormTitle").textContent = custom ? `Edit "${custom.name}"` : "Create your own";
+  $("customName").value = custom ? custom.name : "";
+  $("customSpec").value = custom ? custom.spec : "";
+  $("addCustom").textContent = custom ? "Save changes" : "Add patina";
+  $("cancelEdit").hidden = !custom;
+  $("customMsg").textContent = "";
+}
+
+async function clearThemesFor(patinaId) {
+  for (const t of await P.cache.listThemes()) {
+    if (t.aestheticId === patinaId) await P.cache.deleteTheme(t.domain, t.aestheticId);
+  }
+}
+
 // Each preset maps a user-facing provider to an adapter type + its API base URL.
 // lockBase: the Anthropic adapter hardcodes its endpoint, so the URL is display-only.
 const PROVIDER_PRESETS = {
@@ -55,15 +73,35 @@ async function render() {
 
   $("denylist").value = settings.denylist.join("\n");
 
-  const list = $("customList");
+  const list = $("patinaList");
   list.innerHTML = "";
+  for (const p of P.presets.PRESETS) {
+    const li = document.createElement("li");
+    const name = document.createElement("span");
+    name.textContent = p.name;
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = "built-in";
+    li.appendChild(name);
+    li.appendChild(tag);
+    list.appendChild(li);
+  }
   for (const c of settings.customAesthetics) {
     const li = document.createElement("li");
-    li.textContent = c.name + " ";
+    const name = document.createElement("span");
+    name.textContent = c.name;
+    li.appendChild(name);
+    const edit = document.createElement("button");
+    edit.textContent = "Edit";
+    edit.addEventListener("click", () => setPatinaForm(c));
+    li.appendChild(edit);
     const del = document.createElement("button");
     del.textContent = "Delete";
     del.addEventListener("click", async () => {
-      await P.settings.saveSettings({ customAesthetics: settings.customAesthetics.filter((x) => x.id !== c.id) });
+      const fresh = await P.settings.getSettings();
+      await P.settings.saveSettings({ customAesthetics: fresh.customAesthetics.filter((x) => x.id !== c.id) });
+      await clearThemesFor(c.id);
+      if (editingPatinaId === c.id) setPatinaForm(null);
       render();
     });
     li.appendChild(del);
@@ -128,14 +166,31 @@ $("saveProvider").addEventListener("click", async () => {
 $("addCustom").addEventListener("click", async () => {
   const name = $("customName").value.trim();
   const spec = $("customSpec").value.trim();
-  if (!name || !spec) return;
+  if (!name || !spec) { $("customMsg").textContent = "A patina needs both a name and a description."; return; }
   const settings = await P.settings.getSettings();
-  const id = slugify(name);
-  if (settings.customAesthetics.some((c) => c.id === id) || P.presets.getAesthetic(id, settings)) return;
-  await P.settings.saveSettings({ customAesthetics: [...settings.customAesthetics, { id, name, spec }] });
-  $("customName").value = ""; $("customSpec").value = "";
+
+  if (editingPatinaId) {
+    // Edit keeps the id stable so cached-theme keys and the popup selection stay valid;
+    // the spec changed, so this patina's cached themes are cleared to regenerate.
+    const customAesthetics = settings.customAesthetics.map((c) =>
+      c.id === editingPatinaId ? { ...c, name, spec } : c
+    );
+    await P.settings.saveSettings({ customAesthetics });
+    await clearThemesFor(editingPatinaId);
+  } else {
+    const id = slugify(name);
+    if (id === "custom-") { $("customMsg").textContent = "Give it a name with at least one letter or number."; return; }
+    if (settings.customAesthetics.some((c) => c.id === id) || P.presets.getAesthetic(id, settings)) {
+      $("customMsg").textContent = "A patina with that name already exists.";
+      return;
+    }
+    await P.settings.saveSettings({ customAesthetics: [...settings.customAesthetics, { id, name, spec }] });
+  }
+  setPatinaForm(null);
   render();
 });
+
+$("cancelEdit").addEventListener("click", () => setPatinaForm(null));
 
 $("saveDenylist").addEventListener("click", async () => {
   const denylist = $("denylist").value.split("\n").map((s) => s.trim()).filter(Boolean);

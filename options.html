@@ -31,12 +31,18 @@
   </section>
 
   <section>
-    <h2>Custom aesthetics</h2>
+    <h2>Patinas</h2>
+    <ul id="patinaList" class="patina-list"></ul>
+    <h3 id="customFormTitle">Create your own</h3>
     <label>Name <input type="text" id="customName" placeholder="Cottagecore"></label>
     <label>Describe it <textarea id="customSpec" rows="4"
       placeholder="Soft floral palette, hand-drawn borders, serif type, pressed-flower dividers..."></textarea></label>
-    <button id="addCustom">Add aesthetic</button>
-    <ul id="customList"></ul>
+    <div>
+      <button id="addCustom">Add patina</button>
+      <button id="cancelEdit" hidden>Cancel</button>
+    </div>
+    <p class="hint" id="customMsg"></p>
+    <p class="hint">Editing or deleting a patina clears its cached site themes, so sites regenerate with the new recipe.</p>
   </section>
 
   <section>
@@ -50,7 +56,7 @@
   <section>
     <h2>Cached themes</h2>
     <table id="cacheTable">
-      <thead><tr><th>Site</th><th>Aesthetic</th><th>Size</th><th>Generated</th><th></th></tr></thead>
+      <thead><tr><th>Site</th><th>Patina</th><th>Size</th><th>Generated</th><th></th></tr></thead>
       <tbody></tbody>
     </table>
   </section>

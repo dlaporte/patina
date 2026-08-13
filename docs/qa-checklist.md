@@ -16,7 +16,7 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 ## Cache behavior
 - [ ] Reload: full theme applies instantly; no LLM network request
 - [ ] Second page on same domain: instant, no generation
-- [ ] Switching aesthetic and back: both directions instant after first generation each
+- [ ] Switching patina and back: both directions instant after first generation each
 
 ## Re-patinate
 - [ ] Popup → Re-patinate: new theme visibly different direction, applied without reload
@@ -35,7 +35,7 @@ Run after any significant change. Prereqs: unpacked install, Anthropic key confi
 ## SPA behavior (YouTube)
 - [ ] Theme survives in-app navigation (style element re-asserted)
 
-## Custom aesthetics
+## Custom patinas
 - [ ] Create one via options; select in popup; site generates and caches under it
 
 ## Sanitizer spot-check
