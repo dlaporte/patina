@@ -47,12 +47,6 @@ This extension is not published to the Chrome Web Store. To install it manually:
 
 Without an API key, the built-in patinas still apply their base themes — the LLM layer just stays off until you add one.
 
-## How It Works
-
-Content scripts run at `document_start` on every enabled site. On a cache hit, the stored theme applies before the page paints. On a first visit, the content script raises the "Patinating…" curtain (unless disabled), applies the patina's base theme beneath it, builds a small structural digest of the page (landmarks, common class names, a few computed colors and fonts), and hands it to the service worker, which asks your configured LLM for a theme envelope: a site-specific stylesheet plus widget placements. The curtain lifts when the theme applies — or after 15 seconds, whichever comes first. The envelope is validated against a closed widget catalog, the CSS is sanitized, and the result is cached per `(site, patina)` in `chrome.storage.local` — permanently, until you re-patinate or delete it.
-
-The LLM only ever produces data (CSS and JSON). Every line of executable code ships in this repository, in line with Manifest V3's remote-code rules. Generated CSS is sanitized before it touches any page: no `@import`, no external `url()` (only bundled assets and `data:` URIs), no full-viewport overlays, 50KB cap.
-
 ## Permissions
 
 | Permission | Purpose |
@@ -72,12 +66,6 @@ Patina sends data to exactly one place: the LLM provider **you** configure.
 - **Minimal page data** — on a site's *first* visit per patina, a small structural digest (page title, hostname, landmark tags, common class names, a few computed colors/fonts) is sent to your provider to generate the theme. Page text, form contents, and personal information are never read or transmitted.
 - **Cached thereafter** — repeat visits make no network requests at all.
 - **Sensitive sites excluded** — banking, health, and government domains are on the default denylist and are never themed or digested unless you remove them.
-
-## Development
-
-- No build step, no runtime dependencies. Tests: `npm test` (Node ≥ 18.13, uses `node --test`).
-- Design spec: `docs/superpowers/specs/2026-08-12-patina-design.md`
-- Manual QA script: `docs/qa-checklist.md`
 
 ## License
 
