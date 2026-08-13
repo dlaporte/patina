@@ -61,3 +61,21 @@ test("capDigest trims topClasses to fit the byte budget", () => {
   assert.ok(capped.topClasses.length >= 5);
   assert.equal(digest.topClasses.length, 200); // input not mutated
 });
+
+test("looksMinified separates hashed class names from semantic ones", () => {
+  const { looksMinified } = require("../content/digest.js");
+  for (const hashed of ["x1n2onr6", "xdt5ytf", "x1yztbdb", "jsx3778", "xjbqbqwtplc"]) {
+    assert.equal(looksMinified(hashed), true, hashed);
+  }
+  for (const semantic of ["sidebar", "card", "mt-4", "card__header", "site-header", "feedback", "container", "wrapper"]) {
+    assert.equal(looksMinified(semantic), false, semantic);
+  }
+});
+
+test("buildDigest flags sites whose top classes are mostly minified", () => {
+  const hashedDoc = fakeDoc();
+  hashedDoc.querySelectorAll = (sel) =>
+    sel === "[class]" ? [fakeEl("x1n2onr6 xdt5ytf"), fakeEl("x1yztbdb x9f619"), fakeEl("x1n2onr6")] : [];
+  assert.equal(buildDigest(hashedDoc, fakeWin).classesLookMinified, true);
+  assert.equal(buildDigest(fakeDoc(), fakeWin).classesLookMinified, false); // semantic classes
+});

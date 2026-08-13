@@ -17,6 +17,9 @@
 - For texture backgrounds use these CSS variables as background-image values: var(--patina-asset-stars), var(--patina-asset-construction), var(--patina-asset-scanlines), var(--patina-asset-tiedye).
 - Do not hide or remove content (no display:none on content containers). Do not create full-viewport fixed overlays.
 - Keep the page usable: readable contrast, visible focus states, working hover states.
+- CONTRAST PAIRING (critical): whenever you change an element's background, you MUST also force a readable text color onto ALL text that sits on that background — including nested spans, divs, and labels that carry their own color classes. Modern sites set text color on deep descendants, so pair every recolored background with a broad descendant color rule (e.g. body with a dark background needs "body :not(a):not(button) { color: <light> !important }" or equivalent regional rules). Never leave a site's original text color over a background you replaced.
+- If the digest reports classesLookMinified: the site's class names are machine-generated hashes. Do NOT reference any digest class names in selectors. Style only semantic elements and landmarks (body, header, nav, main, aside, footer, article, section, h1-h6, p, a, button, input, img, [role] attributes).
+- For dense application UIs (feeds, chat panes, toolbars — many landmarks and thousands of elements): prefer recoloring (backgrounds, text, links, subtle borders) over structural decoration. Apply panel borders, bevels, skews, and other shape treatments only to elements you can identify semantically — never to generic divs or spans, which produces empty decorated boxes.
 - Prefer specific selectors; !important is acceptable to beat utility-class frameworks.
 - Keep total CSS under 40KB.
 Respond with a single JSON object and nothing else: {"css": "...", "widgets": [...], "notes": "<one-line summary of the direction you took>"}.`;

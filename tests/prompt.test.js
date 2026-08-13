@@ -39,3 +39,10 @@ test("envelope schema widget enum stays in sync with the validator catalog", () 
     WIDGET_TYPES
   );
 });
+
+test("css rules carry contrast pairing, minified-class, and dense-app guidance", () => {
+  const p = buildSystemPrompt(aesthetic);
+  assert.ok(p.includes("CONTRAST PAIRING"));
+  assert.ok(p.includes("classesLookMinified"));
+  assert.ok(p.toLowerCase().includes("dense application"));
+});

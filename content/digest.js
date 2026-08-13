@@ -11,6 +11,15 @@
     return 0.2126 * r + 0.7152 * g + 0.0722 * b < 128;
   }
 
+  // Machine-generated class names (CSS modules, Facebook-style hashes) are useless
+  // as theming selectors. Heuristic: no word separators AND (contains a digit, or is
+  // long and nearly vowel-free). "sidebar"/"mt-4"/"card__header" pass; "x1n2onr6" doesn't.
+  function looksMinified(name) {
+    if (/[-_]/.test(name)) return false;
+    if (/\d/.test(name)) return true;
+    return name.length >= 8 && (name.match(/[aeiou]/g) || []).length <= 2;
+  }
+
   function pickStyles(el, win, props) {
     if (!el) return null;
     const cs = win.getComputedStyle(el);
@@ -44,13 +53,16 @@
       h1: pickStyles(doc.querySelector("h1, h2"), win, ["font-family", "font-size", "color"])
     };
 
+    const minifiedCount = topClasses.filter((c) => looksMinified(c.name)).length;
+
     return {
       title: doc.title || "",
       host: win.location ? win.location.hostname : "",
       landmarks,
       topClasses,
       styles,
-      darkMode: isDarkColor(styles.body && styles.body["background-color"])
+      darkMode: isDarkColor(styles.body && styles.body["background-color"]),
+      classesLookMinified: topClasses.length > 0 && minifiedCount / topClasses.length > 0.4
     };
   }
 
@@ -62,5 +74,5 @@
     return d;
   }
 
-  return { buildDigest, isDarkColor, capDigest };
+  return { buildDigest, isDarkColor, looksMinified, capDigest };
 });
