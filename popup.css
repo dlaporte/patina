@@ -98,13 +98,6 @@ main { padding: 12px 14px; display: grid; gap: 12px; }
 
 /* ---- Patina picker: inset brass slot ---- */
 .field { display: grid; gap: 4px; }
-.field-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--copper-deep);
-}
 .select-wrap { position: relative; display: block; }
 .select-wrap::after {
   content: "";
