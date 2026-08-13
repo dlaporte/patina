@@ -2,19 +2,41 @@
 <html>
 <head><meta charset="utf-8"><link rel="stylesheet" href="popup.css"></head>
 <body>
-  <h1>Patina</h1>
-  <div id="site" class="site"></div>
-  <div id="status" class="status"></div>
-  <label class="field">Patina
-    <select id="aesthetic"></select>
-  </label>
-  <div class="row">
-    <button id="patinate" hidden>Patinate this page</button>
-    <button id="repatinate">&#9851; Re-patinate</button>
-    <button id="toggleSite"></button>
-  </div>
-  <div id="error" class="error" hidden></div>
-  <a href="#" id="openOptions">Options</a>
+  <header class="plate">
+    <img src="icons/icon32.png" alt="" width="26" height="26">
+    <h1>Patina</h1>
+  </header>
+
+  <main>
+    <section class="site-card">
+      <div id="site" class="site"></div>
+      <div id="statusRow" class="status" data-state="idle">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="status"></span>
+      </div>
+    </section>
+
+    <label class="field">
+      <span class="field-label">Patina</span>
+      <span class="select-wrap">
+        <select id="aesthetic"></select>
+      </span>
+    </label>
+
+    <div class="actions">
+      <button id="patinate" class="btn primary" hidden disabled>Patinate this page</button>
+      <button id="repatinate" class="btn primary" disabled>&#9851; Re-patinate this site</button>
+      <button id="toggleSite" class="btn ghost" disabled>Disable on this site</button>
+    </div>
+
+    <div id="error" class="error" hidden></div>
+  </main>
+
+  <footer>
+    <span class="version">v0.1.0</span>
+    <button id="openOptions" class="btn ghost small">Options</button>
+  </footer>
+
   <script src="common/settings.js"></script>
   <script src="common/presets.js"></script>
   <script src="popup.js"></script>

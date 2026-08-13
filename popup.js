@@ -22,27 +22,34 @@ async function init() {
   }
 
   if (!host) {
-    for (const id of ["patinate", "repatinate", "toggleSite"]) $(id).disabled = true;
-    return;
+    setStatus("unsupported", "Nothing to patinate here");
+    $("toggleSite").textContent = "Disable on this site";
+    return; // buttons stay disabled (their initial HTML state)
   }
 
   const st = await chrome.runtime.sendMessage({ type: "patina:status", domain: host });
   const everywhere = await chrome.permissions.contains({ origins: ["<all_urls>"] });
 
-  $("status").textContent =
-    st.siteState === "denylisted" ? "This site is denylisted" :
-    st.siteState === "off" ? "Patina is off here" :
-    st.generating ? "Generating theme…" :
-    !st.hasKey ? "No API key — open Options" :
-    st.error ? "Last attempt failed" :
-    st.cached ? "Themed (cached)" : "Not yet themed";
+  if (st.siteState === "denylisted") setStatus("off", "This site is denylisted");
+  else if (st.siteState === "off") setStatus("off", "Patina is off here");
+  else if (st.generating) setStatus("generating", "Generating theme…");
+  else if (!st.hasKey) setStatus("nokey", "No API key — open Options");
+  else if (st.error) setStatus("error", "Last attempt failed");
+  else if (st.cached) setStatus("cached", "Themed (cached)");
+  else setStatus("idle", "Not yet themed");
 
   if (st.error) { $("error").hidden = false; $("error").textContent = st.error; }
 
   $("patinate").hidden = everywhere || st.siteState !== "on";
+  $("patinate").disabled = false;
   $("repatinate").disabled = st.siteState !== "on" || !st.hasKey || st.generating;
   $("toggleSite").textContent = st.siteState === "off" ? "Enable on this site" : "Disable on this site";
   $("toggleSite").disabled = st.siteState === "denylisted";
+}
+
+function setStatus(state, text) {
+  $("statusRow").dataset.state = state;
+  $("status").textContent = text;
 }
 
 $("aesthetic").addEventListener("change", async (e) => {
@@ -53,10 +60,13 @@ $("aesthetic").addEventListener("change", async (e) => {
 
 $("repatinate").addEventListener("click", async () => {
   $("repatinate").disabled = true;
-  $("status").textContent = "Generating theme…";
+  setStatus("generating", "Generating theme…");
   const res = await chrome.runtime.sendMessage({ type: "patina:repatinate", domain: host, tabId: tab.id });
   if (res.ok) window.close();
-  else { $("error").hidden = false; $("error").textContent = res.error; $("repatinate").disabled = false; }
+  else {
+    setStatus("error", "Last attempt failed");
+    $("error").hidden = false; $("error").textContent = res.error; $("repatinate").disabled = false;
+  }
 });
 
 $("toggleSite").addEventListener("click", async () => {
@@ -72,6 +82,6 @@ $("patinate").addEventListener("click", async () => {
   window.close();
 });
 
-$("openOptions").addEventListener("click", (e) => { e.preventDefault(); chrome.runtime.openOptionsPage(); });
+$("openOptions").addEventListener("click", () => chrome.runtime.openOptionsPage());
 
 init();
